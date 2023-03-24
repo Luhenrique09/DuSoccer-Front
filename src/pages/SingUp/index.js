@@ -1,8 +1,40 @@
 import styled from 'styled-components';
 import { TextField } from "@material-ui/core";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../../services/api';
+import { useState } from 'react';
 
 export default function Signup() {
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [repeatPassword, setRepeatPassword] = useState('')
+  const body = {
+    name: name,
+    email: email,
+    password: password
+  }
+
+  function handleSubmit() {
+    
+    
+      setIsLoading(true);
+       const promise = api.signUp(body);
+   
+       promise.then(() => {
+         setIsLoading(false);
+         navigate("/");
+       });
+       promise.catch((error) => {
+         setIsLoading(false);
+         console.log(error)
+         alert('Erro, tente novamente');
+       });  
+  }
+
 
   return (
     <Page>
@@ -12,13 +44,14 @@ export default function Signup() {
       </Row>
       <Row>
         <Label>Inscrição</Label>
-        <form>
-          <TextField label="E-mail" type="text" fullWidth/*  value={email}  onChange={e => setEmail(e.target.value)} */ />
-          <TextField label="Senha" type="password" fullWidth />
-          <TextField label="Repita sua senha" type="password" fullWidth />
+        <Form >
+          <TextField label="Nome" type="text" value={name} onChange={e => setName(e.target.value)} disabled={isLoading} required />
+          <TextField label="E-mail" type="text" value={email} onChange={e => setEmail(e.target.value)} disabled={isLoading} required />
+          <TextField label="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)} disabled={isLoading} required />
+          <TextField label="Repita sua senha" type="password" value={repeatPassword} onChange={e => setRepeatPassword(e.target.value)} disabled={isLoading} required />
 
-          <Button variant="contained">Entrar</Button>
-        </form>
+          <Button onClick={handleSubmit} type="submit" >Entrar</Button>
+        </Form>
       </Row>
       <Row>
         <Link to="/"><A>Já está inscrito? Faça login</A></Link>
@@ -26,6 +59,13 @@ export default function Signup() {
     </Page>
   );
 }
+const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 500px;
+  height: 300px;
+`
 
 const Page = styled.div`
 

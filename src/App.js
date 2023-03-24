@@ -5,16 +5,20 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
+import { UserProvider } from "./contexts/userContext";
 
 function App() {
   return (
     <>
-    <Router>
-      <Routes>
-        <Route path="/" element={<SignIn />} />
-        <Route path="/sign-up" element={<Signup />} />
-      </Routes>
-    </Router>
+      <UserProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<SignIn />} />
+            <Route path="/sign-up" element={<Signup />} />
+          </Routes>
+        </Router>
+      </UserProvider>
+
     </>
   );
 }
