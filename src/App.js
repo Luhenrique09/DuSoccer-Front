@@ -5,19 +5,21 @@ import {
   Routes,
   Route,
 } from 'react-router-dom';
-import { UserProvider } from "./contexts/userContext";
+import { AuthProvider } from "./contexts/AuthContext";
+import Home from "./pages/Home";
 
 function App() {
   return (
     <>
-      <UserProvider>
+      <AuthProvider>
         <Router>
           <Routes>
             <Route path="/" element={<SignIn />} />
             <Route path="/sign-up" element={<Signup />} />
+            <Route  path="/home" element={<Home />}/>
           </Routes>
         </Router>
-      </UserProvider>
+      </AuthProvider>
 
     </>
   );

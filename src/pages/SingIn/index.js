@@ -1,78 +1,134 @@
 import styled from 'styled-components';
 import { TextField } from "@material-ui/core";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../../services/api';
+import { useState } from 'react';
+import useAuth from '../../hooks/useAuth';
+import { useEffect } from 'react';
+
 
 export default function SignIn() {
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { auth, login } = useAuth();
+  const body = {
+    email,
+    password
+  }
+
+  /* 
+    useEffect(() => {
+      if (auth && auth.token) {
+        navigate("/home");
+      }
+    }, []);
+   */
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    setIsLoading(true);
+    const promise = api.login(body);
+    promise.then((response) => {
+      setIsLoading(false);
+
+      login(response.data);
+      navigate("/home")
+    });
+    promise.catch(() => {
+      setIsLoading(false);
+
+      alert('Erro, tente novamente');
+    });
+  }
+
 
   return (
-    <Page>
-      <Row>
-        <img />
-        <Title>DuSoccer</Title>
-      </Row>
-      <Row>
-        <Label>Entrar</Label>
-        <form>
-          <TextField label="E-mail" type="text" fullWidth/*  value={email}  onChange={e => setEmail(e.target.value)} */ />
-          <TextField label="Senha" type="text" fullWidth />
+    <Container>
+      <LeftLoging>
+        <h1> Venha fazer parte do nosso time</h1>
+       
+      </LeftLoging>
+      <RightLogin>
+        <CardLogin>
+          <h1>LOGIN</h1>
+          <Form>
+            <TextField fullWidth variant="standard"  label="E-mail" type="text" value={email} onChange={e => setEmail(e.target.value)} disabled={isLoading} required />
+            <TextField fullWidth variant="standard"  label="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)} disabled={isLoading} required />
 
-          <Button variant="contained">Entrar</Button>
-        </form>
-      </Row>
-      <Row>
-        <Link to="/sign-up"><A>Não possui login? Inscreva-se</A></Link>
-      </Row>
-    </Page>
+            <Button onClick={handleSubmit} type="submit">Entrar</Button>
+          </Form>
+          <Link to="/sign-up"><A>Não possui login? Inscreva-se</A></Link>
+        </CardLogin>
+      </RightLogin>
+     
+    </Container >
+
   );
 }
 
-
-
-const Page = styled.div`
-
-  background-size: cover;
-  height: 100vh;
-  width: 100%;
+const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  font-size: 48px;
+  background-color: #201b2c;
+  width: 100vw;
+  height: 100%;
+`
+const LeftLoging = styled.div`
+  width: 50vw;
+  height: 100vh;
 
-  & > *:not(:last-child) {
-    margin-bottom: 24px;
-  }
-
-  & > * {
-    text-align: center;
-  }
-
-  @media (max-width: 600px) {
-    padding: 0;
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 32px;
-  margin-top: 10px;
-`;
-
-const Label = styled.h1`
-  font-size: 24px;
-  margin-bottom: 10px;
-`;
-
-const Row = styled.div`
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-`;
+
+  h1{
+    color: #77ffc0;
+    font-size: 40px;
+  }
+`
+
+const RightLogin = styled.div`
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const CardLogin = styled.div`
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
+  padding: 30px 35px ;
+  background-color: #2f2841;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px #00000056;
+
+  h1{
+    color: #00ff88;
+    font-weight: 800;
+    margin: 0;
+  }
+`
+const Form = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  input{
+    width: 25vw;
+  }
+`
 
 const A = styled.div`
   text-decoration: none;
-  color: black;
+  color: #201b3c;
   font-size: 18px;
   &:hover {
     text-decoration: underline;
@@ -81,11 +137,17 @@ const A = styled.div`
 `;
 
 const Button = styled.button`
-background-color: rgb(21, 101, 192);
-  color: white;
-  font-size: 18px;
-  padding: 8px 16px;
+  width: 100%;
+  padding: 16px 0px;
+  margin: 25px 0;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 8px;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 15px;
+  color: #2b124b;
+  background-color: #00ff88;
+  cursor:pointer;
+  box-shadow: 0px 10px 40px -12px #00ff8052;
 `;

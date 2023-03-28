@@ -18,21 +18,20 @@ export default function Signup() {
     password: password
   }
 
-  function handleSubmit() {
-    
-    
-      setIsLoading(true);
-       const promise = api.signUp(body);
-   
-       promise.then(() => {
-         setIsLoading(false);
-         navigate("/");
-       });
-       promise.catch((error) => {
-         setIsLoading(false);
-         console.log(error)
-         alert('Erro, tente novamente');
-       });  
+  function handleSubmit(e) {
+    e.preventDefault();
+    setIsLoading(true);
+    const promise = api.signUp(body);
+
+    promise.then(() => {
+      setIsLoading(false);
+      navigate("/");
+    });
+    promise.catch((error) => {
+      setIsLoading(false);
+      console.log(error)
+      alert('Erro, tente novamente');
+    });
   }
 
 
