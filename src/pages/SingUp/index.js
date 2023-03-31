@@ -30,88 +30,96 @@ export default function Signup() {
     promise.catch((error) => {
       setIsLoading(false);
       console.log(error)
-      alert('Erro, tente novamente');
     });
   }
 
 
   return (
-    <Page>
-      <Row>
-        <img />
-        <Title>DuSoccer</Title>
-      </Row>
-      <Row>
-        <Label>Inscrição</Label>
-        <Form >
-          <TextField label="Nome" type="text" value={name} onChange={e => setName(e.target.value)} disabled={isLoading} required />
-          <TextField label="E-mail" type="text" value={email} onChange={e => setEmail(e.target.value)} disabled={isLoading} required />
-          <TextField label="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)} disabled={isLoading} required />
-          <TextField label="Repita sua senha" type="password" value={repeatPassword} onChange={e => setRepeatPassword(e.target.value)} disabled={isLoading} required />
+    <Container>
+      <LeftLoging>
+        <h1> Venha fazer parte do nosso time</h1>
 
-          <Button onClick={handleSubmit} type="submit" >Entrar</Button>
-        </Form>
-      </Row>
-      <Row>
-        <Link to="/"><A>Já está inscrito? Faça login</A></Link>
-      </Row>
-    </Page>
+      </LeftLoging>
+      <RightLogin>
+        <CardLogin>
+          <h1>CADASTRE-SE</h1>
+          <Form>
+            <TextField fullWidth variant="standard" label="Nome" type="text" value={name} onChange={e => setName(e.target.value)} disabled={isLoading} required />
+            <TextField fullWidth variant="standard" label="E-mail" type="text" value={email} onChange={e => setEmail(e.target.value)} disabled={isLoading} required />
+            <TextField fullWidth variant="standard" label="Senha" type="password" value={password} onChange={e => setPassword(e.target.value)} disabled={isLoading} required />
+            <TextField fullWidth variant="standard" label="Repita sua senha" type="password" value={repeatPassword} onChange={e => setRepeatPassword(e.target.value)} disabled={isLoading} required />
+            <Button onClick={handleSubmit} type="submit">Cadastrar</Button>
+          </Form>
+          <Link to="/"><A>Já está inscrito? Faça login</A></Link>
+        </CardLogin>
+      </RightLogin>
+
+    </Container >
+
   );
 }
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #201b2c;
+  width: 100vw;
+  height: 100%;
+`
+const LeftLoging = styled.div`
+  width: 50vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h1{
+    color: #77ffc0;
+    font-size: 40px;
+  }
+`
+
+const RightLogin = styled.div`
+  width: 50vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const CardLogin = styled.div`
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
+  padding: 30px 35px ;
+  background-color: #2f2841;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px #00000056;
+
+  h1{
+    color: #00ff88;
+    font-weight: 800;
+    margin: 0;
+  }
+`
 const Form = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 500px;
-  height: 300px;
+  align-items: flex-start;
+  input{
+    width: 25vw;
+  }
 `
-
-const Page = styled.div`
-
-  background-size: cover;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 48px;
-
-  & > *:not(:last-child) {
-    margin-bottom: 24px;
-  }
-
-  & > * {
-    text-align: center;
-  }
-
-  @media (max-width: 600px) {
-    padding: 0;
-  }
-`;
-
-const Title = styled.h1`
-  font-size: 32px;
-  margin-top: 10px;
-`;
-
-const Label = styled.h1`
-  font-size: 24px;
-  margin-bottom: 10px;
-`;
-
-const Row = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-`;
-
 
 const A = styled.div`
   text-decoration: none;
-  color: black;
+  color: #201b3c;
   font-size: 18px;
   &:hover {
     text-decoration: underline;
@@ -120,11 +128,17 @@ const A = styled.div`
 `;
 
 const Button = styled.button`
-background-color: rgb(21, 101, 192);
-  color: white;
-  font-size: 16px;
-  padding: 8px 16px;
+  width: 100%;
+  padding: 16px 0px;
+  margin: 25px 0;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 8px;
+  outline: none;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 15px;
+  color: #2b124b;
+  background-color: #00ff88;
+  cursor:pointer;
+  box-shadow: 0px 10px 40px -12px #00ff8052;
 `;

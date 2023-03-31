@@ -17,29 +17,29 @@ export default function SignIn() {
     email,
     password
   }
-
-  /* 
+ 
     useEffect(() => {
       if (auth && auth.token) {
         navigate("/home");
       }
-    }, []);
-   */
+    }, [navigate]);
+   
   function handleSubmit(e) {
     e.preventDefault();
 
     setIsLoading(true);
     const promise = api.login(body);
+    
     promise.then((response) => {
       setIsLoading(false);
 
       login(response.data);
       navigate("/home")
     });
-    promise.catch(() => {
+    promise.catch((err) => {
       setIsLoading(false);
 
-      alert('Erro, tente novamente');
+      console.log(err);
     });
   }
 
@@ -75,6 +75,10 @@ const Container = styled.div`
   background-color: #201b2c;
   width: 100vw;
   height: 100%;
+
+  @media (max-width: 650px) {
+      flex-direction: column;     
+    }
 `
 const LeftLoging = styled.div`
   width: 50vw;
@@ -85,9 +89,18 @@ const LeftLoging = styled.div`
   justify-content: center;
   align-items: center;
 
+  @media (max-width: 650px) {
+      height: 10vh;
+      margin-top: 50px;
+    }
+
   h1{
     color: #77ffc0;
     font-size: 40px;
+
+    @media (max-width: 650px) {
+     font-size: 20px;
+    }
   }
 `
 
@@ -97,6 +110,12 @@ const RightLogin = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 650px) {
+      width: 100vw;
+      margin-top: 50px;
+    }
+
 `
 const CardLogin = styled.div`
   width: 60%;
