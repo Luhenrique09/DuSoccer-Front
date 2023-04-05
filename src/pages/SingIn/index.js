@@ -19,9 +19,9 @@ export default function SignIn() {
   }
  
     useEffect(() => {
-      if (auth && auth.token) {
+      if(localStorage.getItem('auth')){
         navigate("/home");
-      }
+      } 
     }, [navigate]);
    
   function handleSubmit(e) {

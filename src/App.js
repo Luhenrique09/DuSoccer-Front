@@ -7,8 +7,10 @@ import {
 } from 'react-router-dom';
 import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
+import  AddChampionship  from "./pages/addChampionship";
 
 function App() {
+
   return (
     <>
       <AuthProvider>
@@ -16,7 +18,8 @@ function App() {
           <Routes>
             <Route path="/" element={<SignIn />} />
             <Route path="/sign-up" element={<Signup />} />
-            <Route  path="/home" element={<Home />}/>
+            <Route path="/home" element={<Home />} />
+            <Route path="/addChampionship" element={<AddChampionship />} />
           </Routes>
         </Router>
       </AuthProvider>

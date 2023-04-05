@@ -1,14 +1,15 @@
 import styled from 'styled-components';
-import { Content } from '../../components/content';
 import { Dashboard } from '../../components/dashboard';
+import { AddChampionshipComp } from '../../components/Championships/addChampionship';
 
-export default function Home() {
 
+export default function AddChampionship() {
   return (
     <Container>
       <Page>
       <Dashboard />
-      <Content/>
+      <AddChampionshipComp/>
+     
       </Page>
     </Container>
   )
@@ -21,7 +22,6 @@ export default function Home() {
   width: 100vw;
   justify-content: center;
   align-items: center;
-
 ` 
 
  const Page = styled.div`
@@ -35,7 +35,5 @@ export default function Home() {
 
   border: 1px none #000;
   box-shadow: 0 0 10px 0px #000;
-
-
  
 `

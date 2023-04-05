@@ -18,9 +18,37 @@ function signUp(body) {
   return promise;
 }
 
+
+function getChampoionshipAll(token) {
+  const config = createConfig(token);
+
+  const promise = axios.get(`${BASE_URL}/championship`, config);
+
+  return promise;
+}
+
+function logout(token){
+  const config = createConfig(token);
+
+  const promise = axios.delete(`${BASE_URL}/auth/logout`, config);
+
+  return promise;
+}
+
+function createChampionship(body, token){
+  const config = createConfig(token);
+
+  const promise = axios.post(`${BASE_URL}/championship`, body, config);
+
+  return promise;
+}
+
 const api = {
   login,
   signUp,
+  logout,
+  getChampoionshipAll,
+  createChampionship
 }
 
 export default api;
