@@ -77,7 +77,8 @@ const Container = styled.div`
   height: 100%;
 
   @media (max-width: 650px) {
-      flex-direction: column;     
+      flex-direction: column;  
+      justify-content: flex-start;   
     }
 `
 const LeftLoging = styled.div`
@@ -92,6 +93,7 @@ const LeftLoging = styled.div`
   @media (max-width: 650px) {
       height: 10vh;
       margin-top: 50px;
+      
     }
 
   h1{
@@ -113,7 +115,6 @@ const RightLogin = styled.div`
 
   @media (max-width: 650px) {
       width: 100vw;
-      margin-top: 50px;
     }
 
 `

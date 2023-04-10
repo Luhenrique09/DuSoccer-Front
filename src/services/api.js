@@ -43,12 +43,28 @@ function createChampionship(body, token){
   return promise;
 }
 
+function getChampoionshipUser(token) {
+  const config = createConfig(token);
+
+  const promise = axios.get(`${BASE_URL}/championship/user`, config);
+
+  return promise;
+}
+
+function postTeams(body ,token){
+  const config = createConfig(token);
+
+  const promise = axios.post(`${BASE_URL}/teams`, body, config);
+  return promise;
+}
 const api = {
   login,
   signUp,
   logout,
   getChampoionshipAll,
-  createChampionship
+  createChampionship,
+  getChampoionshipUser,
+  postTeams
 }
 
 export default api;
