@@ -3,12 +3,16 @@ import styled from 'styled-components';
 import { FaBars, FaSearch } from 'react-icons/fa';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
+import api from '../../services/api';
 
 export default function MyMenu({hiddenAdd, setHiddenAdd}) {
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+  const { auth } = useAuth();
   function openHiddenAdd(){
     setHiddenAdd(!hiddenAdd);
+    console.log(hiddenAdd)
   }
 
   function init() {
@@ -20,6 +24,20 @@ export default function MyMenu({hiddenAdd, setHiddenAdd}) {
     navigate("/ChampionshipUser");
   
   }
+
+
+  function logout(token) {
+    const promise = api.logout(token)
+    promise.then((resp) => {
+
+      localStorage.removeItem('auth')
+      navigate("/")
+    })
+    promise.catch((err) => {
+      console.log(err);
+    });
+  }
+
   return (
     <AppBar>
       <MenuButton>
@@ -29,17 +47,18 @@ export default function MyMenu({hiddenAdd, setHiddenAdd}) {
           <DropdownItem onClick={init}>Inicio</DropdownItem>
           <DropdownItem onClick={openHiddenAdd}>+ Crie seu Campeonato</DropdownItem>
           <DropdownItem onClick={ChampionshipUser}>Meus Campeonatos</DropdownItem>
-          <DropdownItem>Sair</DropdownItem>
+          <DropdownItem onClick={() => logout(auth.token)}>Sair</DropdownItem>
         </DropdownContent>
       </Dropdown>
       </MenuButton>
       <Title onClick={init}>DuSoccer</Title>
-      <SearchWrapper>
+      <Title onClick={ChampionshipUser}>Olá, {auth.name}</Title>
+     {/*  <SearchWrapper>
         <SearchIconWrapper>
           <FaSearch />
         </SearchIconWrapper>
         <InputBaseWrapper placeholder="Search…" aria-label="search" />
-      </SearchWrapper>
+      </SearchWrapper> */}
     </AppBar>
   );
 }
@@ -57,6 +76,7 @@ const AppBar = styled.div`
   top: 0;
   left: 0;
   right: 0;
+  z-index: 1;
 `;
 
 const Dropdown = styled.div`

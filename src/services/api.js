@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:4000';
+const BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 function createConfig(token) {
   return { headers: { Authorization: `Bearer ${token}` } };
@@ -38,7 +38,7 @@ function logout(token){
 function createChampionship(body, token){
   const config = createConfig(token);
 
-  const promise = axios.post(`${BASE_URL}/championship`, body, config);
+  const promise = axios.post(`${BASE_URL}/championship/user`, body, config);
 
   return promise;
 }
@@ -55,8 +55,18 @@ function postTeams(body ,token){
   const config = createConfig(token);
 
   const promise = axios.post(`${BASE_URL}/teams`, body, config);
+
   return promise;
 }
+
+function deleteChampionship(championshipId ,token){
+  const config = createConfig(token);
+
+  const promise = axios.delete(`${BASE_URL}/championship/${championshipId}`, config);
+
+  return promise;
+}
+
 const api = {
   login,
   signUp,
@@ -64,7 +74,8 @@ const api = {
   getChampoionshipAll,
   createChampionship,
   getChampoionshipUser,
-  postTeams
+  postTeams,
+  deleteChampionship
 }
 
 export default api;

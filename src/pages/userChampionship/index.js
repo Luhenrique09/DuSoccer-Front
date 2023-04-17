@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { FaArrowRight, FaEdit, FaPlus, FaTrash } from "react-icons/fa";
+import { FaArrowRight, FaPlus, FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import MyMenu from "../../components/menu";
 import useAuth from "../../hooks/useAuth";
@@ -8,11 +9,13 @@ import api from "../../services/api";
 export function PageUserChampionship() {
   const { auth } = useAuth();
   const [championship, setChampionship] = useState([]);
-  const [showAddTeamInput, setShowAddTeamInput] = useState(false);
   const [name, setName] = useState('');
   const [selectedCard, setSelectedCard] = useState(null);
-
-
+  const [hiddenAdd, setHiddenAdd] = useState(false);
+  const navigate = useNavigate();
+  if(hiddenAdd){
+    navigate("/home")
+  }
   useEffect(() => {
     const promise = api.getChampoionshipUser(auth.token);
     promise.then((response) => {
@@ -27,19 +30,19 @@ export function PageUserChampionship() {
 
   function handleCardClick(card) {
     if (selectedCard && selectedCard.id === card.id) {
-    
+
     } else {
       setSelectedCard(card);
     }
   }
 
-  function createdTeam(event, {id}) {
+  function createdTeam(event, { id }) {
     event.preventDefault();
     const body = {
       name,
       championshipsId: id
     }
-    
+
     console.log(body)
     const promise = api.postTeams(body, auth.token);
 
@@ -53,20 +56,31 @@ export function PageUserChampionship() {
       });
 
   }
+
+  function deleteChampionship(championshipId) {
+    const promise = api.deleteChampionship(championshipId, auth.token);
+
+    promise
+      .then((resp) => {
+        window.location.reload();
+        console.log(resp)
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
+  }
+
   return (
     <>
-      <MyMenu />
+      <MyMenu hiddenAdd={hiddenAdd} setHiddenAdd={setHiddenAdd} />
       <PageWrapper>
         {championship.map((card) => (
-          <Card onClick={() =>  handleCardClick(card)} key={card.id}>
+          <Card onClick={() => handleCardClick(card)} key={card.id}>
             <CardTitle>{card.name}</CardTitle>
             <CardImage src={card.image} alt={card.title} />
             <CardContent>{card.teams.length}/{card.numTeam} Times</CardContent>
 
-            <EditButton onClick={() => console.log('Edit', card.id)}>
-              <FaEdit />
-            </EditButton>
-            <DeleteButton onClick={() => console.log('Delete', card.id)}>
+            <DeleteButton onClick={() => deleteChampionship(card.id)}>
               <FaTrash />
             </DeleteButton>
             {card.teams.length < card.numTeam ? (
@@ -83,7 +97,7 @@ export function PageUserChampionship() {
                   </SubmitButton>
                 </AddTeamForm>
               ) : (
-                <AddButton onClick={() =>setSelectedCard(card.id)}>
+                <AddButton onClick={() => setSelectedCard(card.id)}>
                   <FaPlus /> Add Equipes
                 </AddButton>
               )
@@ -132,21 +146,11 @@ const SubmitButton = styled.button`
   font-size: 20px;
 `;
 
-const EditButton = styled.button`
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background-color: transparent;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-`;
 
 const DeleteButton = styled.button`
   position: absolute;
-  top: 8px;
-  right: 40px;
+  top: 5px;
+  right: 5px;
   background-color: transparent;
   color: white;
   border: none;

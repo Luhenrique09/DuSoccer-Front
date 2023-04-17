@@ -5,17 +5,12 @@ import styled from "styled-components";
 import { Button, FormControlLabel, Radio, RadioGroup, TextField } from "@material-ui/core";
 
 export function AddChampionshipComp({setHiddenAdd}) {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(false);
   const [name, setName] = useState("");
-  const [numTeam, setNumTeam] = useState("");
+  const [numTeam, setNumTeam] = useState(0);
   const [image, setImage] = useState("");
   const { auth } = useAuth();
-  const body = {
-    name,
-    numTeam,
-    returnPlay: value,
-    image,
-  };
+ 
 
   const handleChange = (event) => {
     setValue(event.target.value);
@@ -23,12 +18,19 @@ export function AddChampionshipComp({setHiddenAdd}) {
 
   function handleSave(e) {
     e.preventDefault();
+    const body = {
+      name,
+      image,
+      numTeam,
+      returnPlay: value,
+    };
 
     const promise = api.createChampionship(body, auth.token);
 
     promise
       .then((resp) => {
-        console.log(body);
+        console.log("deu certo",body)
+        window.location.reload();
       })
       .catch((err) => {
         console.log(err.response.data);
